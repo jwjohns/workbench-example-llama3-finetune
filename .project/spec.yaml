@@ -3,7 +3,7 @@ specMinorVersion: 2
 meta:
   name: llama3-finetune
   image: project-llama3-finetune
-  description: An example project for finetuning a Llama3 model
+  description: An example project for finetuning a Llama 3.3 model on DGX Spark GB10
   labels: []
   createdOn: "2024-07-09T22:56:06Z"
   defaultBranch: main
@@ -23,16 +23,19 @@ layout:
 environment:
   base:
     registry: nvcr.io
-    image: nvidia/ai-workbench/pytorch:1.0.2
-    build_timestamp: "20231102150513"
-    name: PyTorch
-    supported_architectures: []
-    cuda_version: "12.2"
-    description: A Pytorch 2.1 Base with CUDA 12.2
+    image: nvidia/ai-workbench/python-cuda129:1.0.1
+    build_timestamp: "20241001000000"
+    name: Python CUDA 12.9
+    supported_architectures:
+    - arm64
+    cuda_version: "12.9"
+    description: Python with CUDA 12.9 for DGX Spark GB10 (sm_121) support
     entrypoint_script: ""
     labels:
-    - cuda12.2
-    - pytorch2.1
+    - cuda12.9
+    - python3.12
+    - dgx-spark
+    - gb10
     apps:
     - name: jupyterlab
       type: jupyterlab
@@ -75,7 +78,7 @@ environment:
     programming_languages:
     - python3
     icon_url: ""
-    image_version: 1.0.2
+    image_version: 1.0.1
     os: linux
     os_distro: ubuntu
     os_distro_release: "22.04"

@@ -1,6 +1,7 @@
 # Table of Contents
 * [Introduction](#nvidia-ai-workbench-introduction)
    * [Project Description](#project-description)
+   * [DGX Spark GB10 Support](#dgx-spark-gb10-support)
    * [Sizing Guide](#sizing-guide)
 * [Quickstart](#quickstart)
    * [Prerequisites](#prerequisites)
@@ -23,7 +24,7 @@
 
 ## Project Description
 
-> **Note:** This branch has been modified to use the [allura-forge/Llama-3.3-8B-Instruct](https://huggingface.co/allura-forge/Llama-3.3-8B-Instruct) model instead of the original Meta Llama 3 models. This model is a community-released version of Llama 3.3 8B that does not require special access approval from Meta.
+> **Note:** This branch has been modified to use the [allura-forge/Llama-3.3-8B-Instruct](https://huggingface.co/allura-forge/Llama-3.3-8B-Instruct) model and is **optimized for NVIDIA DGX Spark with GB10** (Grace Blackwell architecture). This model is a community-released version of Llama 3.3 8B that does not require special access approval from Meta.
 
 The Llama-3.3-8B-Instruct model is an advanced LLM that demonstrates improved performance over Llama 3.1 8B on reasoning, code generation, and contextual understanding tasks. In this project, we will focus on finetuning this model in two ways:
 
@@ -47,6 +48,30 @@ Because the LLM uses itself as a reward model, it is able to align itself withou
 | :---------------------------|
 | This project is meant as an example workflow and a starting point; you are free to swap out the dataset, choose a different task, and edit the training prompts as you see fit for your particular use case! |
 
+## DGX Spark GB10 Support
+
+This branch has been specifically configured to work with **NVIDIA DGX Spark** systems featuring the **GB10 Grace Blackwell** chip.
+
+### Key Changes for GB10 Compatibility
+
+| Component | Original | Updated |
+|-----------|----------|---------|
+| Base Image | `nvidia/ai-workbench/pytorch:1.0.2` (CUDA 12.2) | `nvidia/ai-workbench/python-cuda129:1.0.1` (CUDA 12.9) |
+| PyTorch | Standard wheels | Nightly with CUDA 13.0 (sm_121 support) |
+| Model | `meta-llama/Meta-Llama-3-8B` | `allura-forge/Llama-3.3-8B-Instruct` |
+
+### Why These Changes?
+
+The GB10 GPU uses the **sm_121** compute capability (Grace Blackwell architecture), which is not supported by standard PyTorch releases. This project uses:
+
+- **CUDA 12.9** base image for better ARM64/Grace CPU support
+- **PyTorch nightly builds** with CUDA 13.0 that include sm_121 kernel support
+- **allura-forge/Llama-3.3-8B-Instruct** model which doesn't require special access approval
+
+### Build Notes
+
+During the container build, the `postBuild.bash` script will automatically install PyTorch nightly with CUDA 13.0 support. This ensures full GPU acceleration on the DGX Spark GB10.
+
 ## Sizing Guide
 
 | GPU VRAM | Example Hardware | Compatible? |
@@ -58,6 +83,7 @@ Because the LLM uses itself as a reward model, it is able to align itself withou
 | 40 GB | A100-40GB | Y (DPO only) |
 | 48 GB | RTX 6000 Ada, L40/L40S, A40 | Y (DPO only) |
 | 80 GB | A100-80GB | Y |
+| **128 GB** | **DGX Spark GB10** | **Y (Recommended)** |
 | >80 GB | 8x A100-80GB | Y |
 
 # Quickstart
@@ -84,9 +110,11 @@ If you do not NVIDIA AI Workbench installed, first complete the installation for
    
 2. Open NVIDIA AI Workbench. Select a location to work in. 
    
-3. Clone this Project onto your desired machine by selecting **Clone Project** and providing the GitHub link.
+3. Clone this Project onto your desired machine by selecting **Clone Project** and providing the GitHub link. **Make sure to select the `llama-3.3-8b-instruct` branch.**
    
 4. Wait for the project to build. You can expand the bottom **Building** indicator to view real-time build logs. 
+
+   > **Note for DGX Spark users**: The build will install PyTorch nightly with CUDA 13.0 support. This may take a few extra minutes.
    
 5. When the build completes, set the following configurations.
 
@@ -101,6 +129,7 @@ If you do not NVIDIA AI Workbench installed, first complete the installation for
 7. Navigate to the `code` directory of the project. Then, open your fine-tuning notebook of choice and get started. Happy coding!
 
 ## Tutorial (CLI-Only)
+
 
 Some users may choose to use the **CLI tool only** instead of the Desktop App. If you do not NVIDIA AI Workbench installed, first complete the installation for AI Workbench [here](https://www.nvidia.com/en-us/deep-learning-ai/solutions/data-science/workbench/). Then, 
 1. Fork this Project to your own GitHub namespace and copying the link
@@ -124,7 +153,7 @@ Some users may choose to use the **CLI tool only** instead of the Desktop App. I
 3. Clone this Project onto your desired machine by running
 
    ```
-   $ nvwb clone project <your_project_link>
+   $ nvwb clone project <your_project_link> --branch llama-3.3-8b-instruct
    ```
    
 4. Open the Project by
