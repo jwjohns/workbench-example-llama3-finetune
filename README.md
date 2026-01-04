@@ -22,15 +22,18 @@
 </p>
 
 ## Project Description
-The Llama3-8B model is an advanced LLM developed by Meta that demonstrates SOTA performance on reasoning, code generation, and contextual understanding tasks. In this project, we will focus on finetuning this base model in two ways:
+
+> **Note:** This branch has been modified to use the [allura-forge/Llama-3.3-8B-Instruct](https://huggingface.co/allura-forge/Llama-3.3-8B-Instruct) model instead of the original Meta Llama 3 models. This model is a community-released version of Llama 3.3 8B that does not require special access approval from Meta.
+
+The Llama-3.3-8B-Instruct model is an advanced LLM that demonstrates improved performance over Llama 3.1 8B on reasoning, code generation, and contextual understanding tasks. In this project, we will focus on finetuning this model in two ways:
 
 1. ```llama3_finetune_inference.ipynb```: Supervised Full Finetuning (SFT)
 
-    This notebook provides a sample workflow for fine-tuning a full precision Llama3-8B base model using SFT on a subset of the OpenAssistant Guanaco dataset with the intention of improving the model's conversational and instruction following capabilities. Then, you can deploy and test your finetuned model on a vLLM API server.
+    This notebook provides a sample workflow for fine-tuning a full precision Llama-3.3-8B-Instruct model using SFT on a subset of the OpenAssistant Guanaco dataset with the intention of improving the model's conversational and instruction following capabilities. Then, you can deploy and test your finetuned model on a vLLM API server.
 
 2. ```llama3dpo.ipynb```: Direct Preference Optimization (DPO)
 
-    This notebook provides a sample workflow for fine-tuning a 4-bit quantized Llama3-8B model using Direct Preference Optimization (DPO).
+    This notebook provides a sample workflow for fine-tuning a 4-bit quantized Llama-3.3-8B-Instruct model using Direct Preference Optimization (DPO).
 
 ### What is Direct Preference Optimization (DPO)? 
 
@@ -62,12 +65,12 @@ Because the LLM uses itself as a reward model, it is able to align itself withou
 ## Prerequisites
 AI Workbench will prompt you to provide a few pieces of information before running any apps in this project. Ensure you have this information ready. 
    
-   * The location where you would like the Llama3-8B models to live on the underlying **host** system. 
-   * The Hugging Face API Key w/ Llama3-8B access (see below).
+   * The location where you would like the Llama-3.3-8B-Instruct models to live on the underlying **host** system. 
+   * The Hugging Face API Key (see below).
 
 | :exclamation: Important             |
 | :---------------------------|
-| Verify you can see a "You have been granted access to this model." message on the Hugging Face model cards [here](https://huggingface.co/meta-llama/Meta-Llama-3-8B) and [here](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct); if not, you may need to accept the terms to grant access for your HF token. |
+| Unlike the original Meta Llama 3 models, the [allura-forge/Llama-3.3-8B-Instruct](https://huggingface.co/allura-forge/Llama-3.3-8B-Instruct) model does not require special access approval. You only need a valid Hugging Face token for authentication. |
 
 ## Tutorial (Desktop App)
 
@@ -87,7 +90,7 @@ If you do not NVIDIA AI Workbench installed, first complete the installation for
    
 5. When the build completes, set the following configurations.
 
-   * `Environment` &rarr; `Mounts` &rarr; `Configure`. Specify the file path of the mount, eg. where the Llama3-8B models will live on your **host** machine.
+   * `Environment` &rarr; `Mounts` &rarr; `Configure`. Specify the file path of the mount, eg. where the Llama-3.3-8B-Instruct models will live on your **host** machine.
    
       eg. if you would like your finetuned model to be saved in your home path, enter ```/home/[user]``` or ```/mnt/C/Users/[user]``` (Windows)
 
@@ -98,6 +101,7 @@ If you do not NVIDIA AI Workbench installed, first complete the installation for
 7. Navigate to the `code` directory of the project. Then, open your fine-tuning notebook of choice and get started. Happy coding!
 
 ## Tutorial (CLI-Only)
+
 Some users may choose to use the **CLI tool only** instead of the Desktop App. If you do not NVIDIA AI Workbench installed, first complete the installation for AI Workbench [here](https://www.nvidia.com/en-us/deep-learning-ai/solutions/data-science/workbench/). Then, 
 1. Fork this Project to your own GitHub namespace and copying the link
 
@@ -137,7 +141,7 @@ Some users may choose to use the **CLI tool only** instead of the Desktop App. I
    $ nvwb start jupyterlab
    ```
    
-   * Specify the file path of the mount, eg. where the Llama3-8B models will live on your **host** machine.
+   * Specify the file path of the mount, eg. where the Llama-3.3-8B-Instruct models will live on your **host** machine.
    
       eg. if you would like your finetuned model to be saved in your home path, enter ```/home/[user]``` or ```/mnt/C/Users/[user]``` (Windows)
 
@@ -147,6 +151,8 @@ Some users may choose to use the **CLI tool only** instead of the Desktop App. I
 
 # License
 This NVIDIA AI Workbench example project is under the [Apache 2.0 License](https://github.com/NVIDIA/workbench-example-llama3-finetune/blob/main/LICENSE.txt)
+
+The Llama-3.3-8B-Instruct model is distributed under the [Llama 3.3 Community License](https://huggingface.co/allura-forge/Llama-3.3-8B-Instruct).
 
 This project may utilize additional third-party open source software projects. Review the license terms of these open source projects before use. Third party components used as part of this project are subject to their separate legal notices or terms that accompany the components. You are responsible for confirming compliance with third-party component license terms and requirements. 
 
